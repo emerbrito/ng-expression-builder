@@ -8,7 +8,8 @@ import { QueryExpression, Field, LogicalOperator, ExpressionChangeEvent } from '
 @Component({
   selector: 'expression-builder',
   templateUrl: './expression-builder.component.html',
-  styleUrls: ['./expression-builder.component.scss']
+  styleUrls: ['./expression-builder.component.scss'],
+  providers: [ExpressionService]
 })
 export class ExpressionBuilderComponent implements OnInit, OnChanges {
   
