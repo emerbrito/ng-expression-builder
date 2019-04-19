@@ -1,0 +1,32 @@
+<mat-button-toggle-group name="condition" aria-label="Condition" (change)="change($event)">
+    <mat-button-toggle value="and" [checked]="operator === 'and'" [disabled]="disable">And</mat-button-toggle>
+    <mat-button-toggle value="or" [checked]="operator === 'or'" [disabled]="disable">Or</mat-button-toggle>
+</mat-button-toggle-group>
+
+<button mat-icon-button 
+    class="action" 
+    aria-label="Add Button" 
+    [matMenuTriggerFor]="menu" 
+    [disabled]="disable">
+    <mat-icon>add</mat-icon>
+</button>
+
+<button mat-icon-button 
+    class="action" 
+    aria-label="Clear Button" 
+    *ngIf="!hideRemove"
+    [disabled]="disable"
+    (click)="removeGroup()">
+    <mat-icon>delete_outline</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="newCondition()">
+        <mat-icon>add</mat-icon>
+        <span>Add Condition</span>
+    </button>    
+    <button mat-menu-item (click)="newGroup()">
+        <mat-icon>add</mat-icon>
+        <span>Add Group</span>
+    </button>
+</mat-menu>  

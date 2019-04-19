@@ -1,0 +1,70 @@
+<div class="container">
+    
+    <mat-form-field floatLabel="never">        
+
+        <field-select #fieldSelector [formControl]="field" [fields]="allFields"></field-select>                
+        <button *ngIf="field.value" mat-button matSuffix mat-icon-button (click)="fieldSelector.clear()">
+            <mat-icon matSuffix>close</mat-icon>
+        </button>  
+
+    </mat-form-field>
+
+    <mat-form-field class="space-left" floatLabel="never">
+        <mat-label>Condition</mat-label>
+        <mat-select [formControl]="condition">
+          <mat-option *ngFor="let option of operators" [value]="option.value">
+            {{option.label}}
+          </mat-option>
+        </mat-select>        
+    </mat-form-field>  
+
+    <ng-container [ngSwitch]="valueControl()">
+
+        <ng-container *ngSwitchCase="'options'">
+
+            <mat-form-field class="space-left" floatLabel="never">
+                <mat-label>Options</mat-label>
+                <mat-select [formControl]="value">
+                    <mat-option *ngFor="let option of fieldOptions.values" [value]="option.value">
+                    {{option.label}}
+                    </mat-option>
+                </mat-select>        
+            </mat-form-field>  
+    
+        </ng-container>    
+        
+        <ng-container *ngSwitchCase="'date'">
+        
+            <mat-form-field class="space-left" floatLabel="never">
+                <input matInput [formControl]="value" [matDatepicker]="picker" placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+    
+        </ng-container>  
+        
+        <ng-container *ngSwitchCase="'text'">
+            <mat-form-field class="space-left" floatLabel="never">
+                <input matInput placeholder="Input" placeholder="Value" [formControl]="value">
+            </mat-form-field> 
+        </ng-container>  
+
+        <ng-container *ngSwitchCase="'number'">
+            <mat-form-field class="space-left" floatLabel="never">
+                <input matInput placeholder="Input" placeholder="Value" [formControl]="value">
+            </mat-form-field> 
+        </ng-container>
+        
+        <ng-container *ngSwitchCase="'bool'">
+            <mat-form-field class="space-left" floatLabel="never">
+                <input matInput placeholder="Input" placeholder="Value" [formControl]="value">
+            </mat-form-field> 
+        </ng-container>        
+
+    </ng-container>
+    
+    <button mat-icon-button class="action space-left remove-button" aria-label="Clear Button" (click)="removeCondition()">
+        <mat-icon>delete_outline</mat-icon>
+    </button>    
+
+</div>

@@ -1,0 +1,32 @@
+<mat-card>
+  <mat-card-header>
+      <mat-card-title>
+          Query Builder
+      </mat-card-title>      
+  </mat-card-header>
+  <mat-card-content> 
+
+    <!-- EXPRESSION BUILDER COMPONENT -->
+    <expression-builder #query [fields]="fields" [data]="data" (valuechange)="change($event)"></expression-builder>
+
+  </mat-card-content>
+  <mat-card-actions>     
+      <button mat-button [disabled]="!valid" (click)="feed()">Load Sample Expression</button>        
+  </mat-card-actions>
+</mat-card>
+
+<mat-card style="margin-top: 15px;">
+  <mat-card-header>
+    <mat-card-title>
+        Query Builder Output
+    </mat-card-title>
+    <mat-card-subtitle>
+        <span *ngIf="query.valid">Expression is valid</span>
+        <span *ngIf="query.invalid" class="red">Invalid Expression</span>                
+    </mat-card-subtitle>  
+  </mat-card-header>
+  <mat-card-content>
+      <pre>{{expression | json}}</pre>
+  </mat-card-content>
+</mat-card>
+

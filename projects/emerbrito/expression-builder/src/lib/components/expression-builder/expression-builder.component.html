@@ -1,0 +1,52 @@
+<form [formGroup]="form">
+    <div class="tree">
+        <ul>
+            <ng-container *ngTemplateOutlet="rulegroup; context:{ group: form, parent: null, rules: extractRules(form), index: 0 }"></ng-container>
+        </ul>    
+    </div>
+</form>
+
+<ng-template #rulegroup let-group="group" let-rules="rules" let-parent="parent" let-gindex="index">
+
+    <li>
+
+        <div class="header">
+            <logical-operator 
+                [formControl]="group.get('operator')"
+                [hideRemove] = "parent == null"
+                (addCondition)="addCondition(group)"
+                (addGroup)="addGroup(group)"
+                (remove)="removeItem(gindex, parent)">
+            </logical-operator>
+        </div>
+        
+        <ul>
+            <ng-container *ngFor="let item of rules; let i = index">
+                <ng-container *ngIf="isCondition(item)"
+                    [ngTemplateOutlet]="ruleitem" 
+                    [ngTemplateOutletContext]="{ group: group, item: item, first: isFirstCondition(i, rules), last: isLastCondition(i, rules), index: i }">
+                </ng-container>             
+            </ng-container>                    
+
+            <ng-container *ngFor="let item of rules; let i = index">
+                <ng-container *ngIf="isGroup(item)"
+                    [ngTemplateOutlet]="rulegroup" 
+                    [ngTemplateOutletContext]="{ group: item, rules: extractRules(item), parent: group, index: i }">
+                </ng-container>                    
+            </ng-container>            
+        </ul>
+
+    </li>       
+
+</ng-template>  
+ 
+
+<ng-template #ruleitem let-group="group" let-item="item" let-first="first" let-last="last" let-index="index">
+    <li>
+        <div>
+            <div class="item" [class.last]="last" [class.first]="first">
+                <condition [formGroup]="item" [allFields]="fields" (remove)="removeItem(index, group)"></condition>
+            </div>                
+        </div>
+    </li>
+</ng-template>

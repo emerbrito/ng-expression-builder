@@ -1,0 +1,29 @@
+{
+  "name": "@emerbrito/expression-builder",
+  "version": "0.0.1",
+  "description": "An expression builder built with Angular Material components.",
+  "author": {
+    "name": "Emerson Brito"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emerbrito/ng-expression-builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/emerbrito/ng-expression-builder/issues"
+  },
+  "homepage": "https://github.com/emerbrito/ng-expression-builder",
+  "keywords": [
+    "angular",
+    "material",
+    "expression",
+    "query",
+    "builder"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0",
+    "@angular/material": "^7.3.7"
+  }
+}

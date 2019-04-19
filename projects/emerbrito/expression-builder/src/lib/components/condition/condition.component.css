@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+.space-left {
+    margin-left: 15px;
+}
+
+.remove-button {
+    margin-top: auto; 
+    margin-bottom: auto;
+}

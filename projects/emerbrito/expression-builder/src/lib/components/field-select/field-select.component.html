@@ -1,0 +1,15 @@
+<input  #input matInput 
+        #selectTrigger="matAutocompleteTrigger" 
+        type="text" 
+        placeholder="Item" 
+        [disabled]="disabled"
+        [value]="inputValue"
+        [matAutocomplete]="select"
+        (blur)="blur(input.value)"        
+        (keyup)="keyup(input.value)">
+
+  <mat-autocomplete #select="matAutocomplete" [displayWith]="labelByValue" (optionSelected)="optionSelected($event)">
+      <mat-option *ngFor="let item of fielteredOptions | async" [value]="item.name">
+          {{item.label}}
+      </mat-option>        
+  </mat-autocomplete>    
