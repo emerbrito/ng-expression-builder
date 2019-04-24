@@ -272,6 +272,15 @@ export class ExpressionService {
       validators: [Validators.required]
     });
 
+    this._types.add(FieldType.Lookup, { 
+      type: FieldType.Lookup, 
+      operators: [
+        ConditionOperator.Equals,
+        ConditionOperator.NotEquals
+      ],
+      validators: [Validators.required]
+    });      
+
     this._types.add(FieldType.Number, { 
       type: FieldType.Date, 
       operators: [

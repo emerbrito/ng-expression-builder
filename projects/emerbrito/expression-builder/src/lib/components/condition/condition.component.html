@@ -1,6 +1,6 @@
 <div class="container">
     
-    <mat-form-field floatLabel="never">        
+    <mat-form-field floatLabel="never" class="field-control">        
 
         <field-select #fieldSelector [formControl]="field" [fields]="allFields"></field-select>                
         <button *ngIf="field.value" mat-button matSuffix mat-icon-button (click)="fieldSelector.clear()">
@@ -13,7 +13,7 @@
         <mat-label>Condition</mat-label>
         <mat-select [formControl]="condition">
           <mat-option *ngFor="let option of operators" [value]="option.value">
-            {{option.label}}
+            <span title="{{option.label}}">{{option.label}}</span>
           </mat-option>
         </mat-select>        
     </mat-form-field>  
@@ -59,7 +59,19 @@
             <mat-form-field class="space-left" floatLabel="never">
                 <input matInput placeholder="Input" placeholder="Value" [formControl]="value">
             </mat-form-field> 
-        </ng-container>        
+        </ng-container>    
+        
+        <ng-container *ngSwitchCase="'lookup'">
+            <mat-form-field class="space-left" floatLabel="never" >
+                <input matInput placeholder="Input" placeholder="Value" [matAutocomplete]="auto" [formControl]="value">
+            </mat-form-field> 
+
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="lookupDisplay">
+                <mat-option *ngFor="let option of lookupService?.data | async" [value]="option">
+                    <span title="{{option[fieldOptions.lookup.textField]}}">{{option[fieldOptions.lookup.textField]}}</span>
+                </mat-option>
+            </mat-autocomplete>            
+        </ng-container>          
 
     </ng-container>
     

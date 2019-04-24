@@ -10,6 +10,6 @@
 
   <mat-autocomplete #select="matAutocomplete" [displayWith]="labelByValue" (optionSelected)="optionSelected($event)">
       <mat-option *ngFor="let item of fielteredOptions | async" [value]="item.name">
-          {{item.label}}
+          <span title="{{item.label}}">{{item.label}}</span>
       </mat-option>        
   </mat-autocomplete>    

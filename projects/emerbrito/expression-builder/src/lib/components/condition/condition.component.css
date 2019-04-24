@@ -5,6 +5,10 @@
     padding: 0;
 }
 
+.field-control {
+    min-width: 206px;
+}
+
 .space-left {
     margin-left: 15px;
 }

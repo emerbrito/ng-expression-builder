@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, ViewChild, Injector } from '@angular/core';
+import { FormGroup, FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { ExpressionService } from '../../services/expression.service';
-import { Field, OptionValue, ConditionOperator, FieldType } from '../../models/models';
+import { Field, OptionValue, ConditionOperator, FieldTypeOperators, LookupService, FieldType } from '../../models/models';
 import { FieldSelectComponent } from '../field-select/field-select.component';
-import { FieldTypeOperators } from '../../models/models';
 
 @Component({
   selector: 'condition',
@@ -20,6 +19,8 @@ export class ConditionComponent implements OnInit, OnDestroy {
   @ViewChild('fieldSelector') fieldSelector: FieldSelectComponent;
   operators: OptionValue[] = [];
   fieldSubs: Subscription;
+  valueSubs: Subscription;
+  lookupService: LookupService;  
 
   get field(): FormControl {
     return this.formGroup.get('fieldName') as FormControl;
@@ -49,22 +50,36 @@ export class ConditionComponent implements OnInit, OnDestroy {
   }   
 
   constructor(
-    private expService: ExpressionService
-  ) { }  
+    private expService: ExpressionService,
+    private injector: Injector
+  ) 
+  { 
+    this.lookupDisplay = this.lookupDisplay.bind(this);
+  }  
 
   ngOnInit() {
 
     this.fieldSubs = this.field.valueChanges
-        .subscribe(value => this.fieldChange(value));
+      .subscribe(value => this.fieldChange(value));
+
+    this.valueSubs = this.value.valueChanges
+      .subscribe(value => this.valueChange(value));          
 
     if(this.fieldOptions) {
       this.operatorFilter(this.fieldOptions);
     }
 
+    if(this.field && !this.field.value || this.field.invalid) {
+      if(this.value) {
+        this.value.disable();
+      }
+    }    
+
   }
 
   ngOnDestroy() {
     if(this.fieldSubs) this.fieldSubs.unsubscribe();
+    if(this.valueSubs) this.valueSubs.unsubscribe();
   }
 
   fieldChange(fieldName: string): void {
@@ -75,13 +90,44 @@ export class ConditionComponent implements OnInit, OnDestroy {
     this.value.setValue('');   
 
     if(field) {
-      this.value.setValidators(this.expService.validadorsByType(field.type))
+      const validators = this.expService.validadorsByType(field.type);
+      if(field.type === FieldType.Lookup) {
+        validators.push(this.lookupValidator(field.lookup.textField, field.lookup.valueField));
+      }
+      this.value.setValidators(validators)      
     }    
     else {
       this.value.setValidators(null);
     }
 
+    if(this.fieldOptions && this.fieldOptions.lookup && this.fieldOptions.lookup.service) {
+      this.lookupService = this.injector.get(this.fieldOptions.lookup.service);
+      console.log('this.lookupService', this.lookupService);
+      this.lookupService.search('');
+    }
+    else {
+      this.lookupService = null;
+    }    
+
+    if(this.field.value && this.field.valid) {
+      this.value.enable();
+    }
+    else {
+      this.value.setValue(null);
+      this.value.disable();
+    }    
+
     this.operatorFilter(field);
+  }
+
+  lookupDisplay(value: any): string | undefined {
+
+    let label: string;
+
+    if(this.fieldOptions && this.fieldOptions.lookup) {
+      label = value[this.fieldOptions.lookup.textField];
+    }    
+    return label || undefined;
   }
 
   operatorFilter(fieldOptions: Field): void {
@@ -104,6 +150,22 @@ export class ConditionComponent implements OnInit, OnDestroy {
     }       
 
   }
+
+  lookupValidator(textField: string, valueField: string): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const value = control.value;
+
+      if(
+          value && 
+          ((typeof value === 'string') ||
+          (!value.hasOwnProperty(textField) || !value.hasOwnProperty(valueField)))
+        ) {
+        return { 'LookupInvalidOption' : {value: control.value} }
+      }
+
+      return null;
+    };
+  }     
    
   operatorDisplayFn(operator: ConditionOperator): string {
 
@@ -116,6 +178,22 @@ export class ConditionComponent implements OnInit, OnDestroy {
 
     return name;
   }  
+
+  valueChange(value: any): void {
+
+    let filter: string = '';
+
+    if(typeof value === 'string') {
+      filter = value;
+    }
+    else if(this.fieldOptions && this.fieldOptions.lookup){      
+      filter = value[this.fieldOptions.lookup.textField];
+    }
+
+    if(this.lookupService) {
+      this.lookupService.search(filter);
+    }
+  }    
 
   removeCondition(): void {
     this.remove.emit();
@@ -130,6 +208,9 @@ export class ConditionComponent implements OnInit, OnDestroy {
       if(this.fieldOptions.values && this.fieldOptions.values.length > 0) {
         name = 'options'
       }
+      else if (this.fieldOptions.type && this.fieldOptions.type === FieldType.Lookup) {
+        name = 'lookup'
+      }      
       else {
         name = this.fieldOptions.type;       
       }

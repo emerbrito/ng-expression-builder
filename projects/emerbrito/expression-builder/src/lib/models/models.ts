@@ -1,8 +1,11 @@
 import { ValidatorFn } from '@angular/forms';
+import { Type } from '@angular/core';
+import { Observable } from 'rxjs';
 
 export enum FieldType {
     Boolean = 'bool',
     Date = 'date',
+    Lookup = 'lookup',
     Number = 'number',
     Text = 'text',
 }
@@ -31,7 +34,22 @@ export interface Field {
     label: string,
     name: string,    
     type: FieldType,
-    values?: OptionValue[]
+    values?: OptionValue[],
+    lookup?: LookupSettings
+}
+
+export interface LookupSettings {
+    valueField: string,
+    textField: string,
+    service: Type<LookupService>
+} 
+
+export interface LookupService {
+    data: Observable<any>;
+    loading: boolean;
+
+    error: (err: any) => void;
+    search: (value: string) => void;
 }
 
 export interface FieldTypeOperators {

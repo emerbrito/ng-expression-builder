@@ -1,5 +1,6 @@
 //import { Field, FieldType, ConditionExpression } from '@emerbrito/expression-builder';
 import { Field, FieldType, ConditionExpression } from '../../../../emerbrito/expression-builder/src/lib/models/models'
+import { SampleRemoteService } from '../sample.remote.service';
 
 
 export const sampleFields: Field[] = [
@@ -7,6 +8,16 @@ export const sampleFields: Field[] = [
     { name: 'lastName', label: 'Last Name', type: FieldType.Text },    
     { name: 'applicatonDate', label: 'Application Date', type: FieldType.Date },    
     { name: 'age', label: 'Age', type: FieldType.Number },    
+    {
+        name: 'manager',
+        label: 'Manager',
+        type: FieldType.Lookup,
+        lookup: {
+            textField: 'FirstName',
+            valueField: 'UserName',
+            service: SampleRemoteService
+        }
+    },    
     { 
         name: 'married', 
         label: 'Married', 
