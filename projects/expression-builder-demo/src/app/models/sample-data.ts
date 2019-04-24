@@ -63,6 +63,14 @@ export const sampleData = {
 			"fieldName": "age",
 			"condition": "ge",
 			"value": "21"
+        },
+        {
+			"fieldName": "manager",
+			"condition": "eq",
+			"value": {
+                FirstName: 'Georgina',
+                UserName: 'georginabarlow'
+            }
 		}]
 	}]
 }

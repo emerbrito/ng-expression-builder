@@ -5,7 +5,7 @@
         <field-select #fieldSelector [formControl]="field" [fields]="allFields"></field-select>                
         <button *ngIf="field.value" mat-button matSuffix mat-icon-button (click)="fieldSelector.clear()">
             <mat-icon matSuffix>close</mat-icon>
-        </button>  
+        </button>
 
     </mat-form-field>
 
@@ -62,8 +62,12 @@
         </ng-container>    
         
         <ng-container *ngSwitchCase="'lookup'">
-            <mat-form-field class="space-left" floatLabel="never" >
-                <input matInput placeholder="Input" placeholder="Value" [matAutocomplete]="auto" [formControl]="value">
+            <mat-form-field class="space-left" floatLabel="never" class="field-control space-left">
+                <input #lookupinput matInput placeholder="Input" placeholder="Value" [matAutocomplete]="auto" [formControl]="value">
+                <button *ngIf="value.value && !lookupService.loading" mat-button matSuffix mat-icon-button (click)="clearLookup()">
+                    <mat-icon matSuffix>close</mat-icon>
+                </button> 
+                <mat-spinner matSuffix *ngIf="lookupService.loading" mode="indeterminate" diameter="17"></mat-spinner>
             </mat-form-field> 
 
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="lookupDisplay">

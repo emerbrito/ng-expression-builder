@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { ExpressionService } from '../../services/expression.service';
 import { Field, OptionValue, ConditionOperator, FieldTypeOperators, LookupService, FieldType } from '../../models/models';
 import { FieldSelectComponent } from '../field-select/field-select.component';
+import { MatAutocompleteTrigger } from '@angular/material';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'condition',
@@ -17,6 +19,7 @@ export class ConditionComponent implements OnInit, OnDestroy {
   @Input() formGroup: FormGroup;
   @Output() remove: EventEmitter<any> = new EventEmitter();
   @ViewChild('fieldSelector') fieldSelector: FieldSelectComponent;
+  @ViewChild('lookupinput',  { read: MatAutocompleteTrigger }) lookupInput: MatAutocompleteTrigger;
   operators: OptionValue[] = [];
   fieldSubs: Subscription;
   valueSubs: Subscription;
@@ -75,11 +78,28 @@ export class ConditionComponent implements OnInit, OnDestroy {
       }
     }    
 
+    this.initLookup();
+
   }
 
   ngOnDestroy() {
     if(this.fieldSubs) this.fieldSubs.unsubscribe();
     if(this.valueSubs) this.valueSubs.unsubscribe();
+  }
+
+  clearLookup(): void {
+
+    if(this.value) {
+      this.value.setValue('');
+    }
+
+    if(this.lookupService) {
+      this.lookupService.search('');
+    }
+
+    // if(this.lookupInput) {
+    //   ;
+    // }
   }
 
   fieldChange(fieldName: string): void {
@@ -98,26 +118,29 @@ export class ConditionComponent implements OnInit, OnDestroy {
     }    
     else {
       this.value.setValidators(null);
-    }
-
-    if(this.fieldOptions && this.fieldOptions.lookup && this.fieldOptions.lookup.service) {
-      this.lookupService = this.injector.get(this.fieldOptions.lookup.service);
-      console.log('this.lookupService', this.lookupService);
-      this.lookupService.search('');
-    }
-    else {
-      this.lookupService = null;
-    }    
-
+    } 
+        
     if(this.field.value && this.field.valid) {
       this.value.enable();
     }
     else {
       this.value.setValue(null);
       this.value.disable();
-    }    
+    }     
 
+    this.initLookup();
     this.operatorFilter(field);
+  }
+
+  initLookup(): void {
+
+    if(this.fieldOptions && this.fieldOptions.lookup && this.fieldOptions.lookup.service) {
+      this.lookupService = this.injector.get(this.fieldOptions.lookup.service);
+      this.lookupService.search('');
+    }
+    else {
+      this.lookupService = null;
+    }        
   }
 
   lookupDisplay(value: any): string | undefined {
