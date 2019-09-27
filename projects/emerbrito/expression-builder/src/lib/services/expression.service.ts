@@ -109,6 +109,7 @@ export class ExpressionService {
     let values: OptionValue[] = [
       { value: ConditionOperator.Equals, label: ConditionLabels[ConditionOperator.Equals]},
       { value: ConditionOperator.NotEquals, label: ConditionLabels[ConditionOperator.NotEquals]},
+      { value: ConditionOperator.Contains, label: ConditionLabels[ConditionOperator.Contains]},
     ];
 
     return values;
@@ -276,8 +277,7 @@ export class ExpressionService {
       type: FieldType.Lookup, 
       operators: [
         ConditionOperator.Equals,
-        ConditionOperator.NotEquals,
-        ConditionOperator.Contains
+        ConditionOperator.NotEquals
       ],
       validators: [Validators.required]
     });      
