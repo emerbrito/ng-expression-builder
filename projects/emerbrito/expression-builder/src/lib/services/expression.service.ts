@@ -276,7 +276,8 @@ export class ExpressionService {
       type: FieldType.Lookup, 
       operators: [
         ConditionOperator.Equals,
-        ConditionOperator.NotEquals
+        ConditionOperator.NotEquals,
+        ConditionOperator.Contains
       ],
       validators: [Validators.required]
     });      
