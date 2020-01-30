@@ -17,7 +17,9 @@ export enum ConditionOperator {
     GreaterEqual = 'ge',
     LessThan = 'lt',
     LessEqual = 'le',
-    Contains = 'contains'    
+    Contains = 'contains',
+    Null = 'null',
+    NotNull = 'notnull'
 }
 
 export interface ExpressionChangeEvent {

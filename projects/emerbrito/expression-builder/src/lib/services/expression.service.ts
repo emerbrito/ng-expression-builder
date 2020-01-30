@@ -110,6 +110,8 @@ export class ExpressionService {
       { value: ConditionOperator.Equals, label: ConditionLabels[ConditionOperator.Equals]},
       { value: ConditionOperator.NotEquals, label: ConditionLabels[ConditionOperator.NotEquals]},
       { value: ConditionOperator.Contains, label: ConditionLabels[ConditionOperator.Contains]},
+      { value: ConditionOperator.Null, label: ConditionLabels[ConditionOperator.Null]},
+      { value: ConditionOperator.NotNull, label: ConditionLabels[ConditionOperator.NotNull]},
     ];
 
     return values;
@@ -255,7 +257,9 @@ export class ExpressionService {
       type: FieldType.Boolean, 
       operators: [
         ConditionOperator.Equals,
-        ConditionOperator.NotEquals
+        ConditionOperator.NotEquals,
+        ConditionOperator.Null,
+        ConditionOperator.NotNull
       ],
       validators: [Validators.required, Validators.pattern('^(true|false|1|0)$')]
     });    
@@ -269,6 +273,8 @@ export class ExpressionService {
         ConditionOperator.LessEqual,
         ConditionOperator.LessThan,
         ConditionOperator.NotEquals,
+        ConditionOperator.Null,
+        ConditionOperator.NotNull        
       ],
       validators: [Validators.required]
     });
@@ -277,7 +283,9 @@ export class ExpressionService {
       type: FieldType.Lookup, 
       operators: [
         ConditionOperator.Equals,
-        ConditionOperator.NotEquals
+        ConditionOperator.NotEquals,
+        ConditionOperator.Null,
+        ConditionOperator.NotNull        
       ],
       validators: [Validators.required]
     });      
@@ -291,6 +299,8 @@ export class ExpressionService {
         ConditionOperator.LessEqual,
         ConditionOperator.LessThan,
         ConditionOperator.NotEquals,
+        ConditionOperator.Null,
+        ConditionOperator.NotNull        
       ],
       validators: [Validators.required, Validators.pattern('^((\-?)([0-9]*)|(\-?)(([0-9]*)\.([0-9]*)))$')]
     });     
@@ -301,6 +311,8 @@ export class ExpressionService {
         ConditionOperator.Contains,
         ConditionOperator.Equals,
         ConditionOperator.NotEquals,
+        ConditionOperator.Null,
+        ConditionOperator.NotNull        
       ],
       validators: [Validators.required]
     });  

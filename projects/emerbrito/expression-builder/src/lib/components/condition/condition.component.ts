@@ -23,6 +23,7 @@ export class ConditionComponent implements OnInit, OnDestroy {
   operators: OptionValue[] = [];
   fieldSubs: Subscription;
   valueSubs: Subscription;
+  conditionSubs: Subscription;
   lookupService: LookupService;  
 
   get field(): FormControl {
@@ -66,7 +67,10 @@ export class ConditionComponent implements OnInit, OnDestroy {
       .subscribe(value => this.fieldChange(value));
 
     this.valueSubs = this.value.valueChanges
-      .subscribe(value => this.valueChange(value));          
+      .subscribe(value => this.valueChange(value)); 
+      
+    this.conditionSubs = this.condition.valueChanges
+      .subscribe(value => this.conditionChange(value))
 
     if(this.fieldOptions) {
       this.operatorFilter(this.fieldOptions);
@@ -85,6 +89,7 @@ export class ConditionComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if(this.fieldSubs) this.fieldSubs.unsubscribe();
     if(this.valueSubs) this.valueSubs.unsubscribe();
+    if(this.conditionSubs) this.conditionSubs.unsubscribe();
   }
 
   clearLookup(): void {
@@ -100,6 +105,18 @@ export class ConditionComponent implements OnInit, OnDestroy {
     // if(this.lookupInput) {
     //   ;
     // }
+  }
+
+  conditionChange(condition: string): void {
+    
+    if(condition === ConditionOperator.NotNull || condition === ConditionOperator.Null) {
+      this.value.setValue('');
+      this.value.disable();
+    }
+    else {
+      this.value.enable();      
+    }
+    
   }
 
   fieldChange(fieldName: string): void {

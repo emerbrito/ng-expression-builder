@@ -3,7 +3,9 @@ export const ConditionLabels = {
     ne: 'Not Equals',
     gt: 'Greater Than',
     ge: 'Greater Or Equal',
-    lt: 'Less than',
+    lt: 'Less Than',
     le: 'Less Or Equal',
-    contains: 'Contains'        
+    contains: 'Contains',
+    null: 'Does Not Contain Data',
+    notnull: 'Contains Data'
 }
