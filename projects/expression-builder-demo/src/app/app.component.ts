@@ -18,17 +18,6 @@ export class AppComponent {
   expression: QueryExpression;
 
   ngOnInit(): void {
-    this.data = {
-      "operator": "and",
-      "rules": [{
-        "fieldName": "driversLicense",
-        "condition": "notnull"
-      }, {
-        "fieldName": "age",
-        "condition": "ge",
-        "value": "50"
-      }]
-    } as any;
   }
   
   feed(): void {
