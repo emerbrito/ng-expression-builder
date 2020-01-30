@@ -341,8 +341,12 @@ export class ExpressionService {
 
   validateField(control: AbstractControl) {
     let value = control && control.value ? control.value : '';
-    let result = this.fields.value(value);
+    let result: Field = null;
 
+    if(value && this.fields) {
+      result = this.fields.value(value);
+    }
+    
     return result != null;
   }    
 
