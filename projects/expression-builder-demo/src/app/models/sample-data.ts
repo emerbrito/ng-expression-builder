@@ -58,8 +58,7 @@ export const sampleData = {
         },
         {
             "fieldName": "driversLicense",
-            "condition": "notnull",
-            "value": ""
+            "condition": "notnull"
         },
         {
 		"operator": "or",

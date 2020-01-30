@@ -116,11 +116,9 @@ export class ExpressionBuilderComponent implements OnInit, OnChanges {
   initialize(): void {
 
     if(this.data && this.expService.validate(this.data)) {
-
       this.form = this.expService.toFormGroup(this.data);     
-
     } else {
-
+      console.log('not valid');
       this.form = this.fb.group({
         operator: [LogicalOperator.And],
         rules: this.fb.array([])

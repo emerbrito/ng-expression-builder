@@ -326,7 +326,7 @@ export class ExpressionService {
     }
 
     let item = value as ConditionExpression;    
-    return item.hasOwnProperty('fieldName') && item.hasOwnProperty('condition') && item.hasOwnProperty('value');
+    return item.hasOwnProperty('fieldName') && item.hasOwnProperty('condition');
   }
 
   public isGroup(value: ConditionExpression | QueryExpression): boolean {
